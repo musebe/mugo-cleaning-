@@ -1,12 +1,22 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
 import { Home, Briefcase, Leaf } from 'lucide-react';
 
-const servicesData = [
+// Define the Service interface
+interface Service {
+  id: number;
+  title: string;
+  frontText: string;
+  backImage: string;
+  link: string;
+  icon: JSX.Element;
+}
+
+const servicesData: Service[] = [
   {
     id: 1,
     title: 'Domestic Services',
@@ -33,7 +43,7 @@ const servicesData = [
   },
 ];
 
-function ServiceCard({ service }) {
+function ServiceCard({ service }: { service: Service }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
