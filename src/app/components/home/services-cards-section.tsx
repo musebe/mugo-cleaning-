@@ -172,9 +172,9 @@ function ServiceCard({ service }: { service: Service }) {
 
 export default function ServicesCardsSection() {
   return (
-    <section className='relative w-screen'>
+    <section className='relative w-screen bg-section'>
       {/* Full-Width Background Color */}
-      <div className='absolute inset-0 w-screen h-full bg-secondary'></div>
+      <div className='absolute inset-0 w-screen h-full bg-section'></div>
 
       {/* Content Container */}
       <div className='relative container mx-auto px-4 md:px-8 py-24 max-w-[1400px]'>

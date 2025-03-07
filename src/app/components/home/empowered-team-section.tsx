@@ -24,7 +24,7 @@ function AnimatedCounter({ from = 0, to = 100, duration = 1 }) {
 
 export default function EmpoweredTeamSection() {
   return (
-    <section className='bg-secondary text-white py-24 md:py-32'>
+    <section className='bg-section text-foreground py-24 md:py-32'>
       <div className='container mx-auto px-4'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8 items-center'>
           {/* Left Column: Image */}
@@ -56,18 +56,18 @@ export default function EmpoweredTeamSection() {
             transition={{ duration: 1 }}
             viewport={{ once: true }}
           >
-            <p className='text-sm uppercase font-semibold tracking-wide text-white/80'>
+            <p className='text-sm uppercase font-semibold tracking-wide text-foreground/80'>
               THE BEST INTEGRATED FACILITIES MANAGEMENT SOLUTIONS PROVIDER
             </p>
 
             {/* Heading with custom underline */}
-            <h2 className='relative inline-block text-3xl md:text-4xl font-bold leading-tight'>
+            <h2 className='relative inline-block text-3xl md:text-4xl font-bold leading-tight text-foreground'>
               EMPOWERED TEAM TO DELIVER CLIENT EXCELLENCE
-              {/* Underline (adjust width, color, etc. to your preference) */}
-              <span className='absolute left-0 -bottom-2 h-[3px] w-[60%] bg-white' />
+              {/* Underline now dynamically styled based on theme */}
+              <span className='absolute left-0 -bottom-2 h-[3px] w-[60%] bg-foreground/50' />
             </h2>
 
-            <p className='leading-relaxed text-white/90'>
+            <p className='leading-relaxed text-foreground/90'>
               We lead this industry by providing integrated world-class cleaning
               services and support solutions through efficient use of resources
               &amp; technology, using sustainable products and an empowered
@@ -83,34 +83,34 @@ export default function EmpoweredTeamSection() {
               viewport={{ once: true }}
             >
               {/* Stat 1 */}
-              <div className='flex flex-col items-center bg-white/10 p-6 rounded-full text-center'>
-                <UserCheck className='w-8 h-8 mb-2' />
-                <span className='text-4xl font-bold'>
+              <div className='flex flex-col items-center bg-muted p-6 rounded-full text-center shadow-lg'>
+                <UserCheck className='w-8 h-8 mb-2 text-primary' />
+                <span className='text-4xl font-bold text-primary'>
                   <AnimatedCounter from={0} to={8300} duration={2} />
                 </span>
-                <span className='text-sm uppercase font-medium text-white/80 mt-1'>
+                <span className='text-sm uppercase font-medium text-foreground/80 mt-1'>
                   Happy Customers
                 </span>
               </div>
 
               {/* Stat 2 */}
-              <div className='flex flex-col items-center bg-white/10 p-6 rounded-full text-center'>
-                <Users className='w-8 h-8 mb-2' />
-                <span className='text-4xl font-bold'>
+              <div className='flex flex-col items-center bg-muted p-6 rounded-full text-center shadow-lg'>
+                <Users className='w-8 h-8 mb-2 text-primary' />
+                <span className='text-4xl font-bold text-primary'>
                   <AnimatedCounter from={0} to={400} duration={2} />
                 </span>
-                <span className='text-sm uppercase font-medium text-white/80 mt-1'>
+                <span className='text-sm uppercase font-medium text-foreground/80 mt-1'>
                   Employees
                 </span>
               </div>
 
               {/* Stat 3 */}
-              <div className='flex flex-col items-center bg-white/10 p-6 rounded-full text-center'>
-                <ThumbsUp className='w-8 h-8 mb-2' />
-                <span className='text-4xl font-bold'>
+              <div className='flex flex-col items-center bg-muted p-6 rounded-full text-center shadow-lg'>
+                <ThumbsUp className='w-8 h-8 mb-2 text-primary' />
+                <span className='text-4xl font-bold text-primary'>
                   <AnimatedCounter from={0} to={100} duration={2} />%
                 </span>
-                <span className='text-sm uppercase font-medium text-white/80 mt-1'>
+                <span className='text-sm uppercase font-medium text-foreground/80 mt-1'>
                   Satisfaction Rate
                 </span>
               </div>

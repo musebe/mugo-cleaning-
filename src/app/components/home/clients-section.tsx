@@ -15,7 +15,7 @@ const clients = [
 
 export default function ClientsSection() {
   return (
-    <section className='bg-secondary text-white py-16'>
+    <section className='bg-section text-foreground py-16'>
       <div className='container mx-auto px-4'>
         {/* Heading */}
         <motion.div
@@ -25,10 +25,10 @@ export default function ClientsSection() {
           transition={{ duration: 1 }}
           viewport={{ once: true }}
         >
-          <h2 className='text-3xl md:text-4xl font-bold leading-tight'>
+          <h2 className='text-3xl md:text-4xl font-bold leading-tight text-foreground'>
             Trusted By Leading Organizations
           </h2>
-          <p className='mt-2 text-white/80'>
+          <p className='mt-2 text-foreground/80'>
             We proudly serve a diverse range of partners and clients
           </p>
         </motion.div>
@@ -49,7 +49,7 @@ export default function ClientsSection() {
                 alt={client.alt}
                 width={180}
                 height={100}
-                className='h-auto object-contain'
+                className='h-auto object-contain grayscale hover:grayscale-0 transition duration-300'
               />
             </motion.div>
           ))}
