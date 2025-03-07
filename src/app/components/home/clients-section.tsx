@@ -10,6 +10,7 @@ const clients = [
   { src: '/clients/toptank.png', alt: 'Top Tank' },
   { src: '/clients/t&c.jpeg', alt: 'T & C' },
   { src: '/clients/hisense.png', alt: 'Hisense' },
+  { src: '/clients/ken.png', alt: 'Kenn' },
 ];
 
 export default function ClientsSection() {

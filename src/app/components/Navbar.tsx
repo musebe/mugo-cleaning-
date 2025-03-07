@@ -4,11 +4,9 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, Search, X, Sun, Moon } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useTheme } from 'next-themes';
-import { TextShimmerWaveColor } from './core/text-shimmer-wave-color';
-import { LogoText } from './core/logo-text';
-
 
 const links = [
   { name: 'Home', href: '/' },
@@ -39,7 +37,6 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // Ensure theme-dependent content only renders on the client
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -47,22 +44,30 @@ export default function Navbar() {
   return (
     <motion.nav
       className='
-        sticky
-        top-0
-        z-40
-        w-full
+        sticky top-0 z-40 w-full
         bg-[color:var(--primary)]
         text-[color:var(--primary-foreground)]
         shadow-md
       '
     >
       <div className='max-w-7xl mx-auto flex items-center justify-between px-6 py-3'>
-        {/* Use the animated text logo instead of an image */}
-        <Link href='/'>
-          <div className='cursor-pointer'>
-            <LogoText />
-          </div>
-        </Link>
+        {/* 
+          1) Wrap the logo in a container 
+          2) Give it a white background
+          3) Add some padding or border radius if desired
+        */}
+        <div className='bg-white px-3 py-2 rounded'>
+          <Link href='/'>
+            <div className='relative w-[120px] h-[40px] cursor-pointer'>
+              <Image
+                src='/logo.png'
+                alt='Logo'
+                fill
+                className='object-contain'
+              />
+            </div>
+          </Link>
+        </div>
 
         {/* Desktop Navigation */}
         <ul className='hidden md:flex items-center gap-6 text-base font-medium'>
@@ -131,10 +136,7 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 className='
-                  block
-                  text-center
-                  py-2
-                  text-lg
+                  block text-center py-2 text-lg
                   hover:text-[color:var(--accent)]
                   transition-colors
                 '

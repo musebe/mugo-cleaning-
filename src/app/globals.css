@@ -10,19 +10,20 @@
 /* Light mode (default) Variables  */
 /* ------------------------------- */
 :root {
-  /* Brand colors from the company profile */
-  --primary: #004a80; /* Deep Blue */
-  --secondary: #3fae29; /* Emerald Green */
-  --accent: #66b2ff; /* Sky Blue */
-  --muted: #f5f5f5; /* Soft Gray */
+  /* Brand colors */
+  --primary: #00008B;       /* DarkBlue */
+  --secondary: #FFA500;     /* Orange */
+  --accent: #FFA500;        /* Same as secondary */
+
+  --muted: #f5f5f5;
   --border: #e0e0e0;
 
   --font-sans: "Poppins", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
 
   /* Light background & foreground */
-  --background: oklch(1 0 0); /* basically white */
-  --foreground: oklch(0.145 0 0); /* near black */
+  --background: oklch(1 0 0);         /* basically white */
+  --foreground: oklch(0.145 0 0);     /* near black */
 
   /* Foregrounds for brand colors */
   --primary-foreground: oklch(0.985 0 0);
@@ -61,17 +62,19 @@
 /* Dark mode overrides (using .dark class from next-themes) */
 /* ------------------------------------------------------ */
 .dark {
-  /* Background & text */
-  --background: #001f3f; /* A dark navy background */
-  --foreground: #fefefe; /* Off-white text for good contrast */
+  /* Use a dark navy instead of black for a more refined look */
+  --background: #0A0F2C;      /* Dark navy background */
+  --foreground: #f0f0f0;      /* Slightly off-white for better readability */
 
-  /* Brand colors in dark mode */
-  --primary: #66b2ff;           /* Lighter Blue for visibility */
-  --primary-foreground: #0b0b0b;
-  --secondary: #9cd681;         /* Soft Green on dark */
-  --secondary-foreground: #0f0f0f;
-  --accent: #3fae29;            /* Another bright accent */
-  --accent-foreground: #102010;
+  /* Keep brand colors consistent in dark mode */
+  --primary: #00008B;
+  --secondary: #FFA500;
+  --accent: #FFA500;
+
+  /* Foregrounds on dark */
+  --primary-foreground: #ffffff;
+  --secondary-foreground: #ffffff;
+  --accent-foreground: #ffffff;
 
   /* Grays & borders in dark */
   --muted: #1a1a1a;
@@ -128,14 +131,16 @@ body {
   color: white;
 }
 .button-primary:hover {
-  background-color: #003366;
+  /* Slightly darker DarkBlue for hover */
+  background-color: #000077;
 }
 .button-secondary {
   background-color: var(--secondary);
   color: white;
 }
 .button-secondary:hover {
-  background-color: #2a7f1f;
+  /* Slightly darker Orange for hover */
+  background-color: #e69500;
 }
 
 /* Sparkle animation for "Get a Quote" */
