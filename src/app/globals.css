@@ -11,8 +11,8 @@
 /* ------------------------------- */
 :root {
   /* Brand colors */
-  --primary: #00008B;   /* DarkBlue */
-  --secondary: #FFA500; /* Orange */
+  --primary: #000033;   /* DarkBlue */
+  --secondary: #f4bb44; /* Orange */
   --accent: #FFA500;    /* Same as secondary */
 
   /* NEW: Introduce a section background color for light mode */
@@ -156,6 +156,13 @@ body {
   /* Slightly darker hover for Orange */
   background-color: #e69500;
 }
+
+/* At the bottom of global.css (or inside a custom CSS file) */
+
+.service-card-bg {
+  background-color: #89cff0; /* The requested color */
+}
+
 
 /* Sparkle animation for "Get a Quote" */
 @keyframes sparkle {

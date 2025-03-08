@@ -1,21 +1,22 @@
 'use client';
 
-import React, { JSX, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
-import { Home, Briefcase, Leaf, Trash2, SprayCan, Toilet } from 'lucide-react';
+import Image from 'next/image'; // For local SVG icons
 
-// Define the Service interface
+// 1) Define the Service interface
 interface Service {
   id: number;
   title: string;
   frontText: string;
-  backImage: string;
+  backImage: string; // Cloudinary public ID or empty
   link: string;
-  icon: JSX.Element;
+  icon: string; // Local icon filename (in public/icons)
 }
 
+// 2) Your updated servicesData with new Cloudinary images & local icons
 const servicesData: Service[] = [
   {
     id: 1,
@@ -29,9 +30,9 @@ const servicesData: Service[] = [
     cleaning services, catering to all your 
     domestic cleaning needs, including ironing, 
     dusting, polishing, and vacuuming.`,
-    backImage: 'mudo/cleaning-company-2',
+    backImage: 'mudo/cleaning-company-14', // <-- Cloudinary ID
     link: '/services/domestic',
-    icon: <Home className='w-6 h-6 md:w-8 md:h-8' />,
+    icon: 'domestic.svg', // <-- local icon in public/icons
   },
   {
     id: 2,
@@ -43,38 +44,12 @@ const servicesData: Service[] = [
     companies of all types across various 
     sectors, including offices, hotels, banks, 
     airports, and more.`,
-    backImage: 'mudo/cleaning-company-1',
+    backImage: 'mudo/cleaning-company-16',
     link: '/services/commercial',
-    icon: <Briefcase className='w-6 h-6 md:w-8 md:h-8' />,
+    icon: 'commercial.svg',
   },
   {
     id: 3,
-    title: 'Landscaping & Gardening',
-    frontText: `We transform terrains from rugged, 
-    desolate surfaces into serene, manicured 
-    lawns and beautiful flower gardens. 
-    Experience aesthetically pleasing and 
-    environmentally responsible landscaping.`,
-    backImage: 'mudo/cleaning-company-9',
-    link: '/services/landscaping',
-    icon: <Leaf className='w-6 h-6 md:w-8 md:h-8' />,
-  },
-  {
-    id: 4,
-    title: 'Fumigation & Pest Control',
-    frontText: `We have perfected the art of eradicating 
-    pests by recognizing infestation trends and 
-    developing safe, eco-friendly treatment 
-    methods. Our services include baiting, 
-    applying repellents, and complete 
-    eradication of termites, cockroaches, 
-    bedbugs, ants, and more.`,
-    backImage: 'mudo/cleaning-company-7',
-    link: '/services/fumigation',
-    icon: <SprayCan className='w-6 h-6 md:w-8 md:h-8' />,
-  },
-  {
-    id: 5,
     title: 'Sanitary Hygiene Solutions',
     frontText: `We provide high-quality washroom 
     services and hygiene solutions across 
@@ -83,12 +58,12 @@ const servicesData: Service[] = [
     dispensers, pedal bins, paper rolls, 
     sanitizers, and other essential washroom 
     consumables.`,
-    backImage: 'mudo/cleaning-company-5',
+    backImage: 'mudo/cleaning-company-3',
     link: '/services/hygiene',
-    icon: <Toilet className='w-6 h-6 md:w-8 md:h-8' />,
+    icon: 'sanitary.svg',
   },
   {
-    id: 6,
+    id: 4,
     title: 'Garbage & Waste Management',
     frontText: `We offer professional garbage 
     collection services for corporate and 
@@ -97,17 +72,44 @@ const servicesData: Service[] = [
     bins remain clean while waste is safely 
     disposed of to maintain a hygienic 
     environment.`,
-    backImage: 'mudo/cleaning-company-8',
+    backImage: '', // No pic
     link: '/services/waste-management',
-    icon: <Trash2 className='w-6 h-6 md:w-8 md:h-8' />,
+    icon: 'garbage.svg',
+  },
+  {
+    id: 5,
+    title: 'Fumigation & Pest Control',
+    frontText: `We have perfected the art of eradicating 
+    pests by recognizing infestation trends and 
+    developing safe, eco-friendly treatment 
+    methods. Our services include baiting, 
+    applying repellents, and complete 
+    eradication of termites, cockroaches, 
+    bedbugs, ants, and more.`,
+    backImage: 'mudo/cleaning-company-5',
+    link: '/services/fumigation',
+    icon: 'fumigation.svg',
+  },
+  {
+    id: 6,
+    title: 'Landscaping & Gardening',
+    frontText: `We transform terrains from rugged, 
+    desolate surfaces into serene, manicured 
+    lawns and beautiful flower gardens. 
+    Experience aesthetically pleasing and 
+    environmentally responsible landscaping.`,
+    backImage: '', // No pic
+    link: '/services/landscaping',
+    icon: 'landscaping.svg',
   },
 ];
 
+// 3) The flipping card component
 function ServiceCard({ service }: { service: Service }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
-  // Detect if the device supports hover
+  // Detect if device supports hover
   useEffect(() => {
     if (window.matchMedia('(hover: none)').matches) {
       setIsTouchDevice(true);
@@ -117,15 +119,18 @@ function ServiceCard({ service }: { service: Service }) {
   return (
     <motion.div
       className='relative w-full h-[380px] perspective mx-auto'
+      // Flip on hover if not touch device
       onMouseEnter={() => {
         if (!isTouchDevice) setIsFlipped(true);
       }}
       onMouseLeave={() => {
         if (!isTouchDevice) setIsFlipped(false);
       }}
+      // Flip on click if it's a touch device
       onClick={() => {
         if (isTouchDevice) setIsFlipped((prev) => !prev);
       }}
+      // Slight scale on hover/click
       whileTap={{ scale: 0.98 }}
       whileHover={{ scale: 1.02 }}
     >
@@ -134,33 +139,48 @@ function ServiceCard({ service }: { service: Service }) {
         animate={{ rotateY: isFlipped ? 180 : 0 }}
         transition={{ duration: 0.7 }}
       >
-        {/* Front Side */}
-        <div className='absolute inset-0 w-full h-full backface-hidden rounded-lg shadow-lg overflow-hidden flex flex-col bg-white dark:bg-muted'>
-          <div className='bg-primary text-white p-4 flex flex-col items-center justify-center gap-2'>
-            {service.icon}
+        {/* --- FRONT SIDE --- */}
+        <div className='absolute inset-0 w-full h-full backface-hidden rounded-lg shadow-lg overflow-hidden flex flex-col bg-[#89cff0] text-white'>
+          {/* Top section with icon & title */}
+          <div className='p-4 flex flex-col items-center justify-center gap-2'>
+            <Image
+              src={`/icons/${service.icon}`} // local icon from public/icons
+              alt={service.title}
+              width={48}
+              height={48}
+            />
             <h3 className='text-lg font-bold text-center'>{service.title}</h3>
           </div>
 
+          {/* Text content */}
           <div className='p-4 flex-1 flex items-center'>
-            <p className='leading-relaxed text-foreground text-justify'>
-              {service.frontText}
-            </p>
+            <p className='leading-relaxed text-justify'>{service.frontText}</p>
           </div>
         </div>
 
-        {/* Back Side */}
+        {/* --- BACK SIDE --- */}
         <div className='absolute inset-0 w-full h-full backface-hidden rounded-lg shadow-lg overflow-hidden rotate-y-180'>
-          <CldImage
-            src={service.backImage}
-            alt={service.title}
-            width={800}
-            height={600}
-            crop='fit'
-            className='object-cover w-full h-full'
-          />
+          {service.backImage ? (
+            <CldImage
+              src={service.backImage}
+              alt={service.title}
+              width={800}
+              height={600}
+              crop='fill'
+              className='object-cover w-full h-full'
+            />
+          ) : (
+            // If no Cloudinary image, fallback to a color block
+            <div className='bg-[#89cff0] w-full h-full flex items-center justify-center'>
+              <p className='text-white font-bold'>No image available</p>
+            </div>
+          )}
           <div className='absolute inset-0 bg-black/40 flex flex-col items-center justify-center p-4 text-white'>
             <h3 className='text-lg font-bold mb-2'>{service.title}</h3>
-            <Link href={service.link} className='underline hover:text-primary'>
+            <Link
+              href={service.link}
+              className='underline hover:text-[#89cff0]'
+            >
               Read More
             </Link>
           </div>
@@ -170,6 +190,7 @@ function ServiceCard({ service }: { service: Service }) {
   );
 }
 
+// 4) The main section that renders all cards
 export default function ServicesCardsSection() {
   return (
     <section className='relative w-screen bg-section'>
