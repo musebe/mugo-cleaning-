@@ -16,8 +16,13 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { useTheme } from 'next-themes';
 
-// Replace this with your actual navItems array from above:
-const navItems = [
+interface NavItem {
+  name: string;
+  href: string;
+  subItems?: { name: string; href: string }[];
+}
+
+const navItems: NavItem[] = [
   {
     name: 'Home',
     href: '/',
@@ -25,12 +30,7 @@ const navItems = [
   {
     name: 'About Us',
     href: '/about',
-    subItems: [
-      { name: 'Who we are', href: '/about/who-we-are' },
-      { name: 'Board Of Directors', href: '/about/board-of-directors' },
-      { name: 'Parapet Uganda', href: '/about/parapet-uganda' },
-      { name: 'Vehicle On Sale', href: '/about/vehicle-on-sale' },
-    ],
+    subItems: [{ name: 'Who we are', href: '/about' }],
   },
   {
     name: 'Services',
@@ -38,13 +38,6 @@ const navItems = [
     subItems: [
       { name: 'Commercial Services', href: '/services/commercial' },
       { name: 'Domestic Services', href: '/services/domestic' },
-      { name: 'Sanitary Hygiene Solutions', href: '/services/hygiene' },
-      {
-        name: 'Garbage & Waste Management',
-        href: '/services/waste-management',
-      },
-      { name: 'Fumigation & Pest Control', href: '/services/fumigation' },
-      { name: 'Landscaping & Gardening', href: '/services/landscaping' },
     ],
   },
   {
@@ -54,10 +47,6 @@ const navItems = [
   {
     name: 'Tenders',
     href: '/tenders',
-  },
-  {
-    name: 'Blog',
-    href: '/blog',
   },
   {
     name: 'Media',
@@ -92,11 +81,9 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false); // For entire mobile menu
   const [openDropdowns, setOpenDropdowns] = useState<{
     [key: string]: boolean;
-  }>({}); // Track which sub-menus are open on mobile
-
-  // Desktop "delayed close" state & ref
+  }>({});
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -110,6 +97,7 @@ export default function Navbar() {
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
     setHoveredItem(itemName);
   };
+
   const handleMouseLeave = () => {
     closeTimeoutRef.current = setTimeout(() => {
       setHoveredItem(null);
@@ -152,7 +140,6 @@ export default function Navbar() {
         <ul className='hidden md:flex items-center gap-6 text-base font-medium'>
           {navItems.map((item) => {
             const hasSubItems = item.subItems && item.subItems.length > 0;
-            // If no subItems, it's a normal link
             if (!hasSubItems) {
               return (
                 <li key={item.name}>
@@ -165,8 +152,6 @@ export default function Navbar() {
                 </li>
               );
             }
-
-            // Otherwise, it's a top-level item with subItems
             return (
               <li
                 key={item.name}
@@ -176,10 +161,8 @@ export default function Navbar() {
               >
                 <span className='flex items-center cursor-pointer hover:text-[color:var(--accent)] transition-colors'>
                   {item.name}
-                  {/* Down arrow icon */}
                   <ChevronDown className='w-4 h-4 ml-1' />
                 </span>
-                {/* Sub-menu if hovered */}
                 {hoveredItem === item.name && (
                   <div
                     onMouseEnter={() => {
@@ -190,12 +173,12 @@ export default function Navbar() {
                     onMouseLeave={handleMouseLeave}
                     className='absolute left-0 mt-2 w-64 rounded bg-[#89cff0] text-white py-2 z-10 shadow-md divide-y divide-white'
                   >
-                    {item.subItems.map((sub) => (
+                    {item.subItems!.map((sub) => (
                       <Link
                         key={sub.name}
                         href={sub.href}
                         className='block px-4 py-2 hover:bg-[#78b6d6] transition-colors'
-                        onClick={() => setHoveredItem(null)} // close on click
+                        onClick={() => setHoveredItem(null)}
                       >
                         {sub.name}
                       </Link>
@@ -256,7 +239,6 @@ export default function Navbar() {
             {navItems.map((item) => {
               const hasSubItems = item.subItems && item.subItems.length > 0;
               if (!hasSubItems) {
-                // Normal link, no sub-menu
                 return (
                   <Link
                     key={item.name}
@@ -272,8 +254,6 @@ export default function Navbar() {
                   </Link>
                 );
               }
-
-              // With subItems => collapsible
               const isOpen = !!openDropdowns[item.name];
               return (
                 <div key={item.name}>
@@ -287,7 +267,6 @@ export default function Navbar() {
                     '
                   >
                     <span>{item.name}</span>
-                    {/* Black box with arrow icon */}
                     <button
                       onClick={() => toggleSubMenu(item.name)}
                       className='bg-black text-white p-1 rounded'
@@ -299,15 +278,13 @@ export default function Navbar() {
                       )}
                     </button>
                   </div>
-                  {/* Sub-items if expanded */}
                   {isOpen && (
                     <div className='ml-4 border-l border-[color:var(--primary-foreground)] pl-4 mt-2 space-y-2'>
-                      {item.subItems.map((sub) => (
+                      {item.subItems!.map((sub) => (
                         <Link
                           key={sub.name}
                           href={sub.href}
                           onClick={() => {
-                            // Close entire menu on sub-link click
                             setMenuOpen(false);
                             setOpenDropdowns({});
                           }}
