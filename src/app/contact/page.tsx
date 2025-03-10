@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
 import React from 'react';
 
@@ -16,23 +15,23 @@ export default function ContactPage() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className='space-y-6 text-center md:text-left text-justify'
+            className='space-y-6'
           >
-            <h1 className='text-3xl md:text-4xl font-bold text-primary'>
-              Contact Us 
+            <h1 className='text-3xl md:text-4xl font-bold text-primary text-center md:text-left'>
+              Contact Us
             </h1>
-            <p className='text-lg text-foreground/80'>
+            <p className='text-lg text-foreground/80 text-center md:text-left'>
               We’d love to hear from you! Fill out the form below or send us a
               message.
             </p>
 
             <div className='border-t border-border my-4'></div>
 
-            <div className='space-y-2'>
+            <div className='space-y-2 text-center md:text-left'>
               <h2 className='text-2xl font-semibold text-foreground'>
                 Contact Information
               </h2>
-              <p className='text-base text-foreground/80'>
+              <p className='text-base text-foreground/80 text-justify'>
                 Utumishi Coop House,
                 <br />
                 Mamlaka Road,
@@ -41,10 +40,10 @@ export default function ContactPage() {
                 <br />
                 Nairobi, Kenya
               </p>
-              <p className='text-base text-foreground/80'>
+              <p className='text-base text-foreground/80 text-justify'>
                 Phone: 020 7867119 / +254 725 060 174
               </p>
-              <p className='text-base text-foreground/80'>
+              <p className='text-base text-foreground/80 text-justify'>
                 Email: info@thedeedslimpeza.co.ke
               </p>
             </div>
@@ -58,8 +57,6 @@ export default function ContactPage() {
             viewport={{ once: true }}
             className='bg-white dark:bg-muted p-6 rounded-lg shadow text-justify'
           >
-            {/* Inviting message on top */}
-
             <form className='space-y-4'>
               <div>
                 <label
