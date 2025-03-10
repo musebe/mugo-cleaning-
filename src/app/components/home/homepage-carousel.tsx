@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CldImage } from 'next-cloudinary';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { carouselSlides } from '@/data/carouselData';
+
 
 // Type for each slide
 interface Slide {
@@ -14,82 +16,6 @@ interface Slide {
   subheading?: string;
   priority?: boolean;
 }
-
-// Slide Data
-const slides: Slide[] = [
-  {
-    id: 1,
-    publicId: 'mudo/cleaning-company-1',
-    alt: 'Hygienic Environment',
-    priority: true,
-    heading: 'We create a hygienic working environment for your team',
-    subheading: 'Focus on your core business, let us handle the cleaning.',
-  },
-  {
-    id: 2,
-    publicId: 'mudo/cleaning-company-2',
-    alt: 'Office Cleaning',
-    priority: true,
-  },
-  {
-    id: 3,
-    publicId: 'mudo/cleaning-company-4',
-    alt: 'Clean Workspaces',
-    priority: true,
-    heading: 'We always come clean',
-    subheading:
-      'We are a professional cleaning, fumigation, landscaping and garbage collection company in Kenya.',
-  },
-  {
-    id: 4,
-    publicId: 'mudo/cleaning-company-3',
-    alt: 'Sanitary Supplies',
-    priority: true,
-  },
-  {
-    id: 5,
-    publicId: 'mudo/cleaning-company-5',
-    alt: 'Eco-Friendly Cleaning',
-    priority: true,
-    heading: 'Get your spaces sparkling clean',
-    subheading: 'From offices to hospitals, we ensure a spotless environment.',
-  },
-  {
-    id: 6,
-    publicId: 'mudo/cleaning-company-7',
-    alt: 'Professional Team',
-    priority: true,
-  },
-  {
-    id: 7,
-    publicId: 'mudo/cleaning-company-6',
-    alt: 'Polished Floors',
-    priority: true,
-    heading: 'Experience our tailored solutions',
-    subheading:
-      'We adapt to your unique needs, delivering consistent excellence.',
-  },
-  {
-    id: 8,
-    publicId: 'mudo/cleaning-company-8',
-    alt: 'Team Collaboration',
-    priority: true,
-  },
-  {
-    id: 9,
-    publicId: 'mudo/cleaning-company-10',
-    alt: 'Exceptional Standards',
-    priority: true,
-    heading: 'Trust our dedicated team',
-    subheading: 'We’ve grown from 2 to 200 staff, always focused on quality.',
-  },
-  {
-    id: 10,
-    publicId: 'mudo/cleaning-company-9',
-    alt: 'Productive Clean Spaces',
-    priority: true,
-  },
-];
 
 // Cloudinary Cloud Name
 const cloudName =
@@ -109,12 +35,12 @@ export default function HomepageCarousel() {
   useEffect(() => {
     let loadedCount = 0;
 
-    slides.forEach((slide) => {
+    carouselSlides.forEach((slide) => {
       const img = new Image();
       img.src = getImageUrl(slide.publicId);
       img.onload = () => {
         loadedCount++;
-        if (loadedCount === slides.length) setLoaded(true);
+        if (loadedCount === carouselSlides.length) setLoaded(true);
       };
     });
 
@@ -126,7 +52,7 @@ export default function HomepageCarousel() {
   // 2) Auto-slide logic
   useEffect(() => {
     intervalRef.current = window.setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % slides.length);
+      setIndex((prevIndex) => (prevIndex + 1) % carouselSlides.length);
     }, 5000);
 
     return () => {
@@ -147,7 +73,7 @@ export default function HomepageCarousel() {
           <AnimatePresence>
             {/* Slide Background & Image */}
             <motion.div
-              key={slides[index].id}
+              key={carouselSlides[index].id}
               className={`absolute inset-0 w-full h-full ${
                 index % 2 === 0 ? 'bg-primary' : 'bg-white'
               } flex justify-center items-center`}
@@ -157,8 +83,8 @@ export default function HomepageCarousel() {
               transition={{ duration: 1.5, ease: 'easeInOut' }}
             >
               <CldImage
-                src={slides[index].publicId}
-                alt={slides[index].alt}
+                src={carouselSlides[index].publicId}
+                alt={carouselSlides[index].alt}
                 fill
                 priority={true}
                 sizes='100vw'
@@ -169,9 +95,9 @@ export default function HomepageCarousel() {
             </motion.div>
 
             {/* Text Overlay */}
-            {slides[index].heading && (
+            {carouselSlides[index].heading && (
               <motion.div
-                key={`text-${slides[index].id}`}
+                key={`text-${carouselSlides[index].id}`}
                 className='absolute top-16 left-1/2 -translate-x-1/2 w-[90%] max-w-2xl p-4 bg-black/50 rounded-lg text-center text-white'
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -179,11 +105,11 @@ export default function HomepageCarousel() {
                 transition={{ duration: 1.2, delay: 0.6 }}
               >
                 <h2 className='text-2xl md:text-4xl font-bold'>
-                  {slides[index].heading}
+                  {carouselSlides[index].heading}
                 </h2>
-                {slides[index].subheading && (
+                {carouselSlides[index].subheading && (
                   <p className='mt-2 text-lg md:text-xl'>
-                    {slides[index].subheading}
+                    {carouselSlides[index].subheading}
                   </p>
                 )}
               </motion.div>
@@ -195,7 +121,8 @@ export default function HomepageCarousel() {
         <button
           onClick={() =>
             setIndex(
-              (prevIndex) => (prevIndex - 1 + slides.length) % slides.length
+              (prevIndex) =>
+                (prevIndex - 1 + carouselSlides.length) % carouselSlides.length
             )
           }
           aria-label='Previous Slide'
@@ -206,7 +133,7 @@ export default function HomepageCarousel() {
 
         <button
           onClick={() =>
-            setIndex((prevIndex) => (prevIndex + 1) % slides.length)
+            setIndex((prevIndex) => (prevIndex + 1) % carouselSlides.length)
           }
           aria-label='Next Slide'
           className='absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-white/20 text-white rounded-full hover:bg-white/30 transition'
@@ -216,7 +143,7 @@ export default function HomepageCarousel() {
 
         {/* Dots (Indicator) */}
         <div className='absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2'>
-          {slides.map((_, dotIndex) => (
+          {carouselSlides.map((_, dotIndex) => (
             <button
               key={dotIndex}
               onClick={() => setIndex(dotIndex)}
