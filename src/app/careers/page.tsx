@@ -2,14 +2,13 @@
 
 import { motion } from 'motion/react';
 import { CldImage } from 'next-cloudinary';
-import Image from 'next/image';
 import { ThumbsUp, Users, CheckCircle, Lightbulb, Smile } from 'lucide-react';
 
 export default function CareersPage() {
   return (
     <main className='flex flex-col'>
-      {/* Section 1: White BG */}
-      <section className='bg-white w-full py-12 px-4 md:px-8'>
+      {/* SECTION 1: CAREERS INTRO (bg-background) */}
+      <section className='bg-background w-full py-12 px-4 md:px-8'>
         <div className='max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center'>
           {/* Left Column: Heading & Text */}
           <motion.div
@@ -49,8 +48,8 @@ export default function CareersPage() {
         </div>
       </section>
 
-      {/* Section 2: Contrasting BG (bg-section) */}
-      <section className='bg-section w-full py-12 px-4 md:px-8 flex-1'>
+      {/* SECTION 2: OUR VALUES (bg-section) */}
+      <section className='bg-section w-full py-12 px-4 md:px-8'>
         <div className='max-w-7xl mx-auto text-center'>
           <motion.h2
             className='text-2xl md:text-3xl font-bold text-foreground mb-6'
@@ -74,7 +73,7 @@ export default function CareersPage() {
 
           {/* Icons Row */}
           <motion.div
-            className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 justify-items-center mb-12'
+            className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 justify-items-center'
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -116,22 +115,26 @@ export default function CareersPage() {
               </p>
             </div>
           </motion.div>
+        </div>
+      </section>
 
-          {/* Current Openings */}
+      {/* SECTION 3: CURRENT OPENINGS (bg-background) */}
+      <section className='bg-background w-full py-12 px-4 md:px-8 flex-1'>
+        <div className='max-w-5xl mx-auto text-center'>
           <motion.h3
             className='text-2xl md:text-3xl font-bold text-foreground mb-4'
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
             Current Openings
           </motion.h3>
           <motion.p
-            className='text-lg text-foreground/80 leading-relaxed max-w-3xl mx-auto'
+            className='text-lg md:text-xl text-foreground/80 leading-relaxed'
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
             viewport={{ once: true }}
           >
             We currently do not have any open positions. Please check back soon
