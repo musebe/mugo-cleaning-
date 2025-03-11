@@ -7,6 +7,9 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { ThemeProvider } from './components/theme-provider';
 
+// 1) Import the WhatsAppChatButton component
+import WhatsAppChatButton from './components/WhatsAppChatButton';
+
 const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
@@ -38,9 +41,9 @@ export default function RootLayout({
       <body
         // Add overflow-x-hidden to body to help prevent horizontal scroll:
         className={`
-          ${inter.variable} 
-          ${ibmPlexMono.variable} 
-          font-mono 
+          ${inter.variable}
+          ${ibmPlexMono.variable}
+          font-mono
           antialiased
           overflow-x-hidden
         `}
@@ -64,6 +67,9 @@ export default function RootLayout({
 
           {/* 5) Footer always at the bottom */}
           <Footer />
+
+          {/* 6) Floating WhatsApp chat button (bottom-right corner) */}
+          <WhatsAppChatButton />
         </ThemeProvider>
       </body>
     </html>
