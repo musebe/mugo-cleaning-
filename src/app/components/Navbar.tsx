@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-
+import { motion, AnimatePresence } from 'framer-motion'; // or 'motion/react' if using Motion One
 import {
   Menu,
   Search,
@@ -123,19 +122,12 @@ export default function Navbar() {
       '
     >
       <div className='max-w-7xl mx-auto flex items-center justify-between px-6 py-3'>
-        {/* Logo */}
-        <div className='bg-white px-3 py-2 rounded'>
-          <Link href='/'>
-            <div className='relative w-[120px] h-[40px] cursor-pointer'>
-              <Image
-                src='/logo.png'
-                alt='Logo'
-                fill
-                className='object-contain'
-              />
-            </div>
-          </Link>
-        </div>
+        {/* LOGO: removed the white background container */}
+        <Link href='/'>
+          <div className='relative w-[120px] h-[40px] cursor-pointer'>
+            <Image src='/logo.png' alt='Logo' fill className='object-contain' />
+          </div>
+        </Link>
 
         {/* Desktop Navigation */}
         <ul className='hidden md:flex items-center gap-6 text-base font-medium'>

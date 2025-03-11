@@ -1,15 +1,16 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion'; // or 'motion/react' if you're using Motion One
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
 import Image from 'next/image';
-import { servicesData } from '@/data/servicesData';
+import { servicesData } from '@/data/servicesData'; // <— import from the file above
 
 interface Service {
   id: string;
   title: string;
+  subheading?: string;
   description: string;
   backImage: string;
   link: string;
@@ -22,6 +23,7 @@ function ServiceCard({ service }: { service: Service }) {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
+    // Detect if it's a touch-only device (no hover)
     if (window.matchMedia('(hover: none)').matches) {
       setIsTouchDevice(true);
     }
@@ -37,6 +39,7 @@ function ServiceCard({ service }: { service: Service }) {
         if (!isTouchDevice) setIsFlipped(false);
       }}
       onClick={() => {
+        // On touch, flip with tap
         if (isTouchDevice) setIsFlipped((prev) => !prev);
       }}
       whileTap={{ scale: 0.98 }}
@@ -47,7 +50,7 @@ function ServiceCard({ service }: { service: Service }) {
         animate={{ rotateY: isFlipped ? 180 : 0 }}
         transition={{ duration: 0.7 }}
       >
-        {/* --- FRONT SIDE: Title header + Image --- */}
+        {/* FRONT SIDE: Title header + Image */}
         <div className='absolute inset-0 w-full h-full backface-hidden rounded-lg shadow-lg overflow-hidden flex flex-col'>
           {/* Header area: title on sky-blue background */}
           <div className='p-2 bg-[#89cff0]'>
@@ -75,9 +78,9 @@ function ServiceCard({ service }: { service: Service }) {
           </div>
         </div>
 
-        {/* --- BACK SIDE: Icon, content and Read More link --- */}
+        {/* BACK SIDE: Icon, subheading, content, "Read More" link */}
         <div className='absolute inset-0 w-full h-full backface-hidden rounded-lg shadow-lg overflow-hidden rotate-y-180 bg-[#89cff0] text-white flex flex-col'>
-          {/* Top: Icon and title */}
+          {/* Top: Icon + Title */}
           <div className='p-2'>
             <div className='flex items-center justify-center gap-2'>
               <Image
@@ -91,14 +94,24 @@ function ServiceCard({ service }: { service: Service }) {
               </h3>
             </div>
           </div>
-          {/* Middle: Full content */}
+
+          {/* Middle: Subheading in orange + paragraphs */}
           <div className='p-4 flex-1 overflow-y-auto'>
+            {/* Subheading in orange, if present */}
+            {service.subheading && (
+              <h4 className='text-accent text-md font-semibold mb-3 text-center'>
+                {service.subheading}
+              </h4>
+            )}
+
+            {/* Main content paragraphs */}
             {service.content.map((paragraph, idx) => (
-              <p key={idx} className='mb-2 text-justify'>
+              <p key={idx} className='mb-4 text-justify'>
                 {paragraph}
               </p>
             ))}
           </div>
+
           {/* Bottom: "Read More" link */}
           <div className='p-2 text-center'>
             <Link href={service.link} className='underline text-white'>
@@ -124,6 +137,7 @@ export default function ServicesCardsSection() {
             AT HOME OR AT WORK, WE WILL GET IT DONE
           </p>
         </div>
+
         <motion.div
           className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'
           initial={{ opacity: 0, y: 20 }}
