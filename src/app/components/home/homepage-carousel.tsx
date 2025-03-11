@@ -35,7 +35,6 @@ export default function HomepageCarousel() {
     intervalRef.current = window.setInterval(() => {
       setIndex((prev) => (prev + 1) % carouselSlides.length);
     }, 5000);
-
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
@@ -54,20 +53,15 @@ export default function HomepageCarousel() {
   return (
     <div className='w-full overflow-hidden'>
       {/**
-       * Give the carousel a fixed height so it never “jumps”
-       * .bg-section = background-color: var(--section-bg) => #F2F2F2 in light mode
+       * Removed `max-w-[100vw]` here. `overflow-hidden` stays to avoid wiggle.
        */}
-      <section className='relative w-full h-[80vh] max-w-[100vw] bg-section overflow-hidden'>
+      <section className='relative w-full h-[80vh] bg-section overflow-hidden'>
         {!loaded && (
           <div className='absolute inset-0 flex items-center justify-center bg-white'>
             <p>Loading...</p>
           </div>
         )}
 
-        {/**
-         * AnimatePresence with a simple fade (no scale).
-         * mode="wait" ensures we remove the old slide fully before adding the new.
-         */}
         <AnimatePresence mode='wait'>
           {loaded && (
             <motion.div
@@ -78,10 +72,6 @@ export default function HomepageCarousel() {
               exit={{ opacity: 0 }}
               transition={{ duration: 1, ease: 'easeInOut' }}
             >
-              {/**
-               * object-contain => entire image is shown (may letterbox if aspect ratio differs).
-               * If you'd rather fill the container (with some cropping), use object-cover.
-               */}
               <CldImage
                 src={carouselSlides[index].publicId}
                 alt={carouselSlides[index].alt}
@@ -92,8 +82,6 @@ export default function HomepageCarousel() {
                 quality='auto'
                 className='object-contain'
               />
-
-              {/** Optional Text Overlay */}
               {carouselSlides[index].heading && (
                 <div className='absolute top-16 left-1/2 -translate-x-1/2 w-[90%] max-w-2xl p-4 bg-black/50 rounded-lg text-center text-white'>
                   <h2 className='text-2xl md:text-4xl font-bold'>
@@ -114,7 +102,7 @@ export default function HomepageCarousel() {
         <button
           onClick={prevSlide}
           aria-label='Previous Slide'
-          className='absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 
+          className='absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3
                      bg-black/40 text-white rounded-full hover:bg-black/60 transition'
         >
           <ChevronLeft className='w-6 h-6' />
@@ -122,7 +110,7 @@ export default function HomepageCarousel() {
         <button
           onClick={nextSlide}
           aria-label='Next Slide'
-          className='absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 
+          className='absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3
                      bg-black/40 text-white rounded-full hover:bg-black/60 transition'
         >
           <ChevronRight className='w-6 h-6' />
