@@ -98,6 +98,9 @@
 body {
   background-color: var(--background);
   font-family: var(--font-sans);
+
+  /* <--- KEY ADDITION to prevent horizontal scroll */
+  overflow-x: hidden;
 }
 
 /* --------------------- */
@@ -157,12 +160,10 @@ body {
   background-color: #e69500;
 }
 
-/* At the bottom of global.css (or inside a custom CSS file) */
-
+/* Example: background utility for your service card color */
 .service-card-bg {
   background-color: #89cff0; /* The requested color */
 }
-
 
 /* Sparkle animation for "Get a Quote" */
 @keyframes sparkle {

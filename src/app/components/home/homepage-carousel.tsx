@@ -53,15 +53,18 @@ export default function HomepageCarousel() {
   return (
     <div className='w-full overflow-hidden'>
       {/**
-       * Removed `max-w-[100vw]` here. `overflow-hidden` stays to avoid wiggle.
+       * Removed max-w-[100vw] here.
+       * We use w-full + overflow-hidden to avoid side-scrolling.
        */}
       <section className='relative w-full h-[80vh] bg-section overflow-hidden'>
+        {/* Loading Overlay */}
         {!loaded && (
           <div className='absolute inset-0 flex items-center justify-center bg-white'>
             <p>Loading...</p>
           </div>
         )}
 
+        {/* Animated Slide Transition */}
         <AnimatePresence mode='wait'>
           {loaded && (
             <motion.div
@@ -82,6 +85,8 @@ export default function HomepageCarousel() {
                 quality='auto'
                 className='object-contain'
               />
+
+              {/* Optional Text Overlay */}
               {carouselSlides[index].heading && (
                 <div className='absolute top-16 left-1/2 -translate-x-1/2 w-[90%] max-w-2xl p-4 bg-black/50 rounded-lg text-center text-white'>
                   <h2 className='text-2xl md:text-4xl font-bold'>
