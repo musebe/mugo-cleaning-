@@ -125,7 +125,7 @@ export default function Navbar() {
         {/* LOGO: removed the white background container */}
         <Link href='/'>
           <div className='relative w-[120px] h-[40px] cursor-pointer'>
-            <Image src='/logo.png' alt='Logo' fill className='object-contain' />
+            <Image src='/logo2.png' alt='Logo' fill className='object-contain' />
           </div>
         </Link>
 
