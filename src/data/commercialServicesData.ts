@@ -43,13 +43,6 @@ export const commercialServicesData = [
         ],
     },
     {
-        label: 'Façade Cleaning',
-        content: [
-            'Façade Cleaning Services',
-            'Content for façade cleaning is not provided, so here is a placeholder. You can add or modify details for façade cleaning as needed.',
-        ],
-    },
-    {
         label: 'Garbage & Waste Management Service',
         content: [
             'Sustainable Waste Management Services by The Deeds Limpeza',
