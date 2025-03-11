@@ -98,9 +98,6 @@
 body {
   background-color: var(--background);
   font-family: var(--font-sans);
-
-  /* <--- KEY ADDITION to prevent horizontal scroll */
-  overflow-x: hidden;
 }
 
 /* --------------------- */
@@ -229,4 +226,14 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ----------------------------------------- */
+/* Finally, hide horizontal overflow globally */
+/* ----------------------------------------- */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
