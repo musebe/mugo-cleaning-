@@ -1,155 +1,142 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { CldImage } from 'next-cloudinary';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { carouselSlides } from '@/data/carouselData';
-
-
-// Type for each slide
-interface Slide {
-  id: number;
-  publicId: string;
-  alt: string;
-  heading?: string;
-  subheading?: string;
-  priority?: boolean;
-}
-
-// Cloudinary Cloud Name
-const cloudName =
-  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'hackit-africa';
-
-// Function to generate Cloudinary image URLs
-function getImageUrl(publicId: string): string {
-  return `https://res.cloudinary.com/${cloudName}/image/upload/c_fit/${publicId}.jpeg`;
-}
 
 export default function HomepageCarousel() {
   const [index, setIndex] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const intervalRef = useRef<number | null>(null);
 
-  // 1) Preload images for a smooth first render
+  // 1) Preload images
   useEffect(() => {
     let loadedCount = 0;
-
     carouselSlides.forEach((slide) => {
       const img = new Image();
-      img.src = getImageUrl(slide.publicId);
+      // Pull a reasonably large version so it’s not blurry on wide screens
+      img.src = `https://res.cloudinary.com/YOUR_CLOUD_NAME/image/upload/q_auto,f_auto/${slide.publicId}.jpg`;
       img.onload = () => {
         loadedCount++;
-        if (loadedCount === carouselSlides.length) setLoaded(true);
+        if (loadedCount === carouselSlides.length) {
+          setLoaded(true);
+        }
       };
     });
 
-    // Fallback in case images don’t load
     const timeout = setTimeout(() => setLoaded(true), 5000);
     return () => clearTimeout(timeout);
   }, []);
 
-  // 2) Auto-slide logic
+  // 2) Auto-slide every 5 seconds
   useEffect(() => {
     intervalRef.current = window.setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % carouselSlides.length);
+      setIndex((prev) => (prev + 1) % carouselSlides.length);
     }, 5000);
 
     return () => {
-      if (intervalRef.current) {
-        window.clearInterval(intervalRef.current);
-      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [index]);
+  }, []);
+
+  // Handlers
+  const prevSlide = () => {
+    setIndex(
+      (prev) => (prev - 1 + carouselSlides.length) % carouselSlides.length
+    );
+  };
+  const nextSlide = () => {
+    setIndex((prev) => (prev + 1) % carouselSlides.length);
+  };
 
   return (
     <div className='w-full overflow-hidden'>
-      <section className='relative w-full h-[85vh] max-w-[100vw] overflow-hidden'>
-        {!loaded ? (
+      {/**
+       * Give the carousel a fixed height so it never “jumps”
+       * .bg-section = background-color: var(--section-bg) => #F2F2F2 in light mode
+       */}
+      <section className='relative w-full h-[80vh] max-w-[100vw] bg-section overflow-hidden'>
+        {!loaded && (
           <div className='absolute inset-0 flex items-center justify-center bg-white'>
             <p>Loading...</p>
           </div>
-        ) : (
-          <AnimatePresence>
-            {/* Slide Background & Image */}
+        )}
+
+        {/**
+         * AnimatePresence with a simple fade (no scale).
+         * mode="wait" ensures we remove the old slide fully before adding the new.
+         */}
+        <AnimatePresence mode='wait'>
+          {loaded && (
             <motion.div
               key={carouselSlides[index].id}
-              className={`absolute inset-0 w-full h-full ${
-                index % 2 === 0 ? 'bg-primary' : 'bg-white'
-              } flex justify-center items-center`}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 1.5, ease: 'easeInOut' }}
+              className='absolute inset-0'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1, ease: 'easeInOut' }}
             >
+              {/**
+               * object-contain => entire image is shown (may letterbox if aspect ratio differs).
+               * If you'd rather fill the container (with some cropping), use object-cover.
+               */}
               <CldImage
                 src={carouselSlides[index].publicId}
                 alt={carouselSlides[index].alt}
                 fill
-                priority={true}
                 sizes='100vw'
-                quality={100}
+                priority
                 crop='fit'
-                className='w-full h-full object-cover'
+                quality='auto'
+                className='object-contain'
               />
-            </motion.div>
 
-            {/* Text Overlay */}
-            {carouselSlides[index].heading && (
-              <motion.div
-                key={`text-${carouselSlides[index].id}`}
-                className='absolute top-16 left-1/2 -translate-x-1/2 w-[90%] max-w-2xl p-4 bg-black/50 rounded-lg text-center text-white'
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 1.2, delay: 0.6 }}
-              >
-                <h2 className='text-2xl md:text-4xl font-bold'>
-                  {carouselSlides[index].heading}
-                </h2>
-                {carouselSlides[index].subheading && (
-                  <p className='mt-2 text-lg md:text-xl'>
-                    {carouselSlides[index].subheading}
-                  </p>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        )}
+              {/** Optional Text Overlay */}
+              {carouselSlides[index].heading && (
+                <div className='absolute top-16 left-1/2 -translate-x-1/2 w-[90%] max-w-2xl p-4 bg-black/50 rounded-lg text-center text-white'>
+                  <h2 className='text-2xl md:text-4xl font-bold'>
+                    {carouselSlides[index].heading}
+                  </h2>
+                  {carouselSlides[index].subheading && (
+                    <p className='mt-2 text-lg md:text-xl'>
+                      {carouselSlides[index].subheading}
+                    </p>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Navigation Arrows */}
         <button
-          onClick={() =>
-            setIndex(
-              (prevIndex) =>
-                (prevIndex - 1 + carouselSlides.length) % carouselSlides.length
-            )
-          }
+          onClick={prevSlide}
           aria-label='Previous Slide'
-          className='absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-white/20 text-white rounded-full hover:bg-white/30 transition'
+          className='absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 
+                     bg-black/40 text-white rounded-full hover:bg-black/60 transition'
         >
           <ChevronLeft className='w-6 h-6' />
         </button>
-
         <button
-          onClick={() =>
-            setIndex((prevIndex) => (prevIndex + 1) % carouselSlides.length)
-          }
+          onClick={nextSlide}
           aria-label='Next Slide'
-          className='absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-white/20 text-white rounded-full hover:bg-white/30 transition'
+          className='absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 
+                     bg-black/40 text-white rounded-full hover:bg-black/60 transition'
         >
           <ChevronRight className='w-6 h-6' />
         </button>
 
-        {/* Dots (Indicator) */}
-        <div className='absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2'>
+        {/* Indicators */}
+        <div className='absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2'>
           {carouselSlides.map((_, dotIndex) => (
             <button
               key={dotIndex}
               onClick={() => setIndex(dotIndex)}
               aria-label={`Go to slide ${dotIndex + 1}`}
               className={`w-3 h-3 rounded-full transition ${
-                dotIndex === index ? 'bg-primary' : 'bg-gray-400'
+                dotIndex === index ? 'bg-black' : 'bg-gray-400'
               }`}
             />
           ))}
