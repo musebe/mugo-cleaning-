@@ -52,7 +52,7 @@ export default function RootLayout({
         {/* 1) Wrap everything in the ThemeProvider for dark mode */}
         <ThemeProvider
           attribute='class'
-          defaultTheme='system'
+          defaultTheme='light' // Set default theme to light mode
           enableSystem
           disableTransitionOnChange
         >
